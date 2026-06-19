@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-export const createVariant = async (req, res, next) => {
+exports.createVariant = async (req, res, next) => {
   try {
     const { productId, size, color, sku, price, stock } = req.body;
     const variant = await prisma.productVariant.create({
@@ -16,7 +15,6 @@ export const createVariant = async (req, res, next) => {
       }
     });
     
-    // Log inventory addition if stock > 0
     if (stock > 0) {
       await prisma.inventoryLog.create({
         data: {
@@ -35,7 +33,7 @@ export const createVariant = async (req, res, next) => {
   }
 };
 
-export const updateVariant = async (req, res, next) => {
+exports.updateVariant = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { size, color, sku, price, stock } = req.body;
@@ -69,7 +67,7 @@ export const updateVariant = async (req, res, next) => {
   }
 };
 
-export const deleteVariant = async (req, res, next) => {
+exports.deleteVariant = async (req, res, next) => {
   try {
     const { id } = req.params;
     await prisma.productVariant.delete({ where: { id } });
@@ -79,7 +77,7 @@ export const deleteVariant = async (req, res, next) => {
   }
 };
 
-export const getVariantsByProduct = async (req, res, next) => {
+exports.getVariantsByProduct = async (req, res, next) => {
   try {
     const { productId } = req.params;
     const variants = await prisma.productVariant.findMany({

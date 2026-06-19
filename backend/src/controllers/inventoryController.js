@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-export const adjustInventory = async (req, res, next) => {
+exports.adjustInventory = async (req, res, next) => {
   try {
     const { productId, variantId, quantity, reason } = req.body;
 
@@ -39,7 +38,7 @@ export const adjustInventory = async (req, res, next) => {
   }
 };
 
-export const getInventoryLogs = async (req, res, next) => {
+exports.getInventoryLogs = async (req, res, next) => {
   try {
     const { productId, variantId, limit = 50, offset = 0 } = req.query;
 
