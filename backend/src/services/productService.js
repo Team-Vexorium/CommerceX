@@ -27,7 +27,7 @@ const listProducts = async ({ page = 1, limit = 12, sort = 'createdAt', order = 
   const take = Number(limit);
 
   const [products, total] = await Promise.all([
-    productRepository.list({ where, skip, take, orderBy: { [sort]: order } }),
+    productRepository.list({ where, skip, take, orderBy: { [sort]: order }, include: { variants: true } }),
     productRepository.count(where)
   ]);
 

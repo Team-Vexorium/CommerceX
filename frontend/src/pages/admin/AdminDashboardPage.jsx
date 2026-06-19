@@ -1,14 +1,44 @@
-import SectionCard from '../../components/SectionCard'
+import { useState, useEffect } from 'react';
+import SectionCard from '../../components/SectionCard';
+import apiClient from '../../services/apiClient';
+import SkeletonLoader from '../../components/common/SkeletonLoader';
+import ErrorBoundary from '../../components/common/ErrorBoundary';
 
-const cards = ['Revenue', 'Orders', 'Customers', 'Products']
+function AdminDashboardContent() {
+  const [metrics, setMetrics] = useState({ revenue: 0, totalOrders: 0, totalCustomers: 0, totalProducts: 0 });
+  const [loading, setLoading] = useState(true);
 
-function AdminDashboardPage() {
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        const response = await apiClient.get('/admin/dashboard');
+        setMetrics(response.data.metrics);
+      } catch (error) {
+        console.error('Failed to fetch metrics', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMetrics();
+  }, []);
+
+  const cards = [
+    { key: 'revenue', title: 'Revenue', value: `$${metrics.revenue.toLocaleString()}` },
+    { key: 'orders', title: 'Orders', value: metrics.totalOrders },
+    { key: 'customers', title: 'Customers', value: metrics.totalCustomers },
+    { key: 'products', title: 'Products', value: metrics.totalProducts }
+  ];
+
   return (
     <div className='space-y-6'>
       <div className='grid gap-4 md:grid-cols-4'>
         {cards.map((card) => (
-          <SectionCard key={card} title={card}>
-            <p className='text-3xl font-bold'>$0</p>
+          <SectionCard key={card.key} title={card.title}>
+            {loading ? (
+              <SkeletonLoader type="text" className="h-8 w-24" />
+            ) : (
+              <p className='text-3xl font-bold'>{card.value}</p>
+            )}
           </SectionCard>
         ))}
       </div>
@@ -21,7 +51,15 @@ function AdminDashboardPage() {
         </ul>
       </SectionCard>
     </div>
-  )
+  );
 }
 
-export default AdminDashboardPage
+function AdminDashboardPage() {
+  return (
+    <ErrorBoundary>
+      <AdminDashboardContent />
+    </ErrorBoundary>
+  );
+}
+
+export default AdminDashboardPage;
