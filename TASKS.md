@@ -1,97 +1,81 @@
-# TASKS.md — CommerceX Build Plan
+# TASKS.md — CommerceX Demo Build Plan
 
-Task IDs (`T-###`) are referenced in commit messages and PRs
-(e.g. `Closes T-014`). Status: `TODO / IN PROGRESS / BLOCKED / DONE`.
+This is a **portfolio/demo site**, so the plan is scoped to look and feel
+complete without any real backend, payments, or infrastructure. Task IDs
+(`T-###`) can be referenced in commits (e.g. `Closes T-012`).
 
-## Phase 0 — Foundations
-
-| ID | Task | Notes | Status |
-|----|------|-------|--------|
-| T-001 | Initialize monorepo (turborepo/pnpm workspaces) | apps/web, apps/admin, apps/api | TODO |
-| T-002 | Set up shared config packages (eslint, tsconfig, tailwind) | | TODO |
-| T-003 | Set up Postgres + Prisma, base schema | User, Product, Order | TODO |
-| T-004 | CI pipeline: lint, typecheck, unit tests | GitHub Actions | TODO |
-| T-005 | Environment config + secrets management | `.env.example`, docs | TODO |
-| T-006 | Design system tokens (colors, type scale, spacing) | Feed into Tailwind config | TODO |
-
-## Phase 1 — Auth & Users
+## Phase 0 — Setup
 
 | ID | Task | Notes | Status |
 |----|------|-------|--------|
-| T-010 | User model + registration/login (email+password) | Hash with argon2/bcrypt | TODO |
-| T-011 | JWT access + refresh token flow | HttpOnly cookie for refresh | TODO |
-| T-012 | Social login (Google) | Optional, can defer | TODO |
-| T-013 | Password reset flow | Email via transactional provider | TODO |
-| T-014 | Account profile page (addresses, saved payment methods) | | TODO |
-| T-015 | Role-based access control (customer / admin) | Middleware guard | TODO |
+| T-001 | Scaffold Vite + React + TypeScript project | | TODO |
+| T-002 | Set up Tailwind + design tokens (colors, type, spacing) | Gives the demo a distinct look, not generic Bootstrap-y | TODO |
+| T-003 | Set up routing (React Router) | Home, Products, Product Detail, Cart, Checkout, Orders, Admin | TODO |
+| T-004 | Create mock data set | 15–30 realistic products across 3–4 categories | TODO |
+| T-005 | Set up mock "API" helper functions with fake delay | `getProducts()`, `getProduct(id)`, `placeOrder()` etc. | TODO |
 
-## Phase 2 — Product Catalog
-
-| ID | Task | Notes | Status |
-|----|------|-------|--------|
-| T-020 | Product & Category models | variants (size/color), SKUs | TODO |
-| T-021 | Product listing page with pagination/sort | | TODO |
-| T-022 | Product detail page | gallery, variant selector, stock status | TODO |
-| T-023 | Category / collection pages | | TODO |
-| T-024 | Search (full-text or Meilisearch) | typo-tolerant, filters | TODO |
-| T-025 | Filtering (price, category, attributes) | Faceted filters UI | TODO |
-| T-026 | Product image upload + CDN storage | S3 + signed URLs | TODO |
-| T-027 | Reviews & ratings | Moderation flag for admin | TODO |
-
-## Phase 3 — Cart & Checkout
+## Phase 1 — Storefront: Browse
 
 | ID | Task | Notes | Status |
 |----|------|-------|--------|
-| T-030 | Cart model (guest + logged-in, persisted) | Merge guest cart on login | TODO |
-| T-031 | Cart UI (drawer/page), quantity updates | Optimistic updates | TODO |
-| T-032 | Shipping address form + validation | | TODO |
-| T-033 | Shipping rate calculation | Flat rate v1, carrier API later | TODO |
-| T-034 | Tax calculation | Region-based, pluggable provider | TODO |
-| T-035 | Promo codes / discounts | Percentage, fixed, min-spend rules | TODO |
-| T-036 | Stripe payment integration (checkout + webhooks) | Test mode first | TODO |
-| T-037 | Order confirmation + email receipt | | TODO |
-| T-038 | Order model + order history page | | TODO |
+| T-010 | Home page (hero, featured products, categories) | This is the first impression — make it polished | TODO |
+| T-011 | Product listing page | grid, pagination or infinite scroll | TODO |
+| T-012 | Category filter | Client-side filter on mock data | TODO |
+| T-013 | Search bar | Client-side fuzzy match on product names | TODO |
+| T-014 | Sort (price, newest, popularity) | | TODO |
+| T-015 | Product detail page | image gallery, variant selector (size/color), description, reviews section | TODO |
+| T-016 | Loading skeletons / empty states | Shows attention to UX detail | TODO |
 
-## Phase 4 — Admin Dashboard
+## Phase 2 — Cart & Fake Checkout
 
 | ID | Task | Notes | Status |
 |----|------|-------|--------|
-| T-040 | Admin auth + role gating | Reuse T-015 | TODO |
-| T-041 | Product CRUD UI | Bulk edit, CSV import optional | TODO |
-| T-042 | Inventory management | Low-stock alerts | TODO |
-| T-043 | Order management (view, update status, refund) | Refund via Stripe API | TODO |
-| T-044 | Customer management | View orders, support notes | TODO |
-| T-045 | Basic analytics dashboard | Revenue, top products, conversion | TODO |
-| T-046 | Discount/coupon management UI | | TODO |
+| T-020 | Cart state (add/remove/update qty) | Zustand or Context, persisted to localStorage | TODO |
+| T-021 | Cart drawer/page UI | subtotal, item count badge in navbar | TODO |
+| T-022 | Checkout form | shipping address, fake payment fields, client-side validation | TODO |
+| T-023 | Order confirmation screen | fake order ID, order summary | TODO |
+| T-024 | Order history page | pulls from mock "past orders" tied to fake session | TODO |
 
-## Phase 5 — Polish & Launch Readiness
+## Phase 3 — Fake Auth
 
 | ID | Task | Notes | Status |
 |----|------|-------|--------|
-| T-050 | Responsive/mobile QA pass | 375px, 768px, 1280px breakpoints | TODO |
-| T-051 | Accessibility audit (axe + manual) | Keyboard nav, contrast, ARIA | TODO |
-| T-052 | Performance pass (Lighthouse) | Image optimization, lazy loading | TODO |
-| T-053 | SEO basics | Meta tags, sitemap, structured data (Product schema) | TODO |
-| T-054 | Error monitoring + logging | Sentry or similar | TODO |
-| T-055 | Load testing on checkout path | k6 or similar | TODO |
-| T-056 | Legal pages | Terms, privacy, returns policy | TODO |
-| T-057 | Staging → production deployment pipeline | Blue/green or rolling | TODO |
+| T-030 | Login / signup screens (UI only) | Any input "succeeds"; store fake session in localStorage | TODO |
+| T-031 | Account page | shows fake profile info, editable in-session only | TODO |
+| T-032 | Protect checkout/orders behind fake login (optional) | Or allow guest checkout — either is fine for a demo | TODO |
 
-## Backlog / Later
+## Phase 4 — Admin Dashboard (showcase piece)
 
-- Wishlists
-- Product recommendations ("customers also bought")
-- Multi-currency / i18n
-- Subscription or recurring orders
-- Abandoned cart email flow
-- Loyalty/rewards program
+| ID | Task | Notes | Status |
+|----|------|-------|--------|
+| T-040 | Admin layout + nav | Separate route/section, e.g. `/admin` | TODO |
+| T-041 | Product list + add/edit/delete (in-memory) | Great for showing CRUD UI skills | TODO |
+| T-042 | Orders list view (mock orders) | Table with status badges | TODO |
+| T-043 | Simple dashboard charts (revenue, top products) | Use mock numbers + a charting library (Recharts) | TODO |
+
+## Phase 5 — Polish for Presentation
+
+| ID | Task | Notes | Status |
+|----|------|-------|--------|
+| T-050 | Responsive pass (mobile/tablet/desktop) | This matters a lot for a portfolio demo | TODO |
+| T-051 | Animations/micro-interactions | hover states, add-to-cart feedback, page transitions | TODO |
+| T-052 | Empty/error states everywhere | empty cart, no search results, etc. | TODO |
+| T-053 | Favicon, page titles, OG image | Small details that make it feel "real" | TODO |
+| T-054 | README with screenshots + live demo link | This is what people will actually read first | TODO |
+| T-055 | Deploy to Vercel/Netlify | Free tier, custom subdomain if possible | TODO |
+
+## Optional Stretch (only if time allows)
+
+- Dark mode toggle
+- Wishlist feature
+- Product quick-view modal
+- Basic animations with Framer Motion
+- A couple of Vitest component tests + one Playwright smoke test, to show
+  testing awareness without over-investing
 
 ## How to Use This File
 
-- Pick the next `TODO` task in the earliest incomplete phase unless a
-  dependency blocks it.
-- When starting a task, change status to `IN PROGRESS` and note the branch
-  name next to it.
-- When a PR merges, mark `DONE` and link the PR number.
-- If a task turns out to be bigger than expected, split it into `T-0XXa`,
-  `T-0XXb` rather than letting one PR balloon.
+- Work top to bottom by phase — browsing and cart matter more to a demo
+  than admin polish, so don't let Phase 4 crowd out Phase 5.
+- Mark tasks `DONE` as you go and jot the deployed URL at the top once
+  live — that's the actual deliverable for a portfolio piece.
